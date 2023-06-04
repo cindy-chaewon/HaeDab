@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">haedab</string>
+    <!-- 온보딩 1 -->
+    <string name="start">시작하기</string>
+    <string name="next">다음</string>
+    <!-- 온보딩 2 -->
+    <string name="info_first1">다양한 카테고리분류</string>
+    <string name="info_first2">코딩, 블로그, 외국어 공부, 콘텐츠 제작, 자기소개서,</string>
+    <string name="info_first3">엑셀, 과제, 주식, 기타아이디어, 이메일 중 선택하시면</string>
+    <string name="info_first4">더욱 많은 카테고리가 나와요.</string>
+    <!-- 온보딩3 -->
+    <string name="info_second1">채팅방으로 이동</string>
+    <string name="info_second2">카테고리를 클릭하셔서 채팅방에 들어오셨다면</string>
+    <string name="info_second3">이제 HaeDab에게 물어보세요.</string>
+    <string name="info_second4">그럼 질문에 대한 해답을 제시해드려요.</string>
 </resources>
