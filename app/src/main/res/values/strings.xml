@@ -13,4 +13,6 @@
     <string name="info_second2">카테고리를 클릭하셔서 채팅방에 들어오셨다면</string>
     <string name="info_second3">이제 HaeDab에게 물어보세요.</string>
     <string name="info_second4">그럼 질문에 대한 해답을 제시해드려요.</string>
+    <!-- 채팅 -->
+    <string name="chatting_edit">여기 입력하세요</string>
 </resources>
