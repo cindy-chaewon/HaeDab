@@ -12,7 +12,7 @@ class OnboardingFirstFragment : BaseFragment<FragmentOnboardingFirstBinding>(Fra
         super.onViewCreated(view, savedInstanceState)
 
         binding.startBtn.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.onboarding_frame, OnboardingSecondFragment()).addToBackStack(null).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.onboarding_frame, OnboardingSecondFragment()).commit()
         }
 
     }

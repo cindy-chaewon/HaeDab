@@ -4,7 +4,8 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class CategoryVerticalItemDecoration : RecyclerView.ItemDecoration(){
+class CategoryListVerticalItemDecoration: RecyclerView.ItemDecoration() {
+
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
@@ -12,7 +13,7 @@ class CategoryVerticalItemDecoration : RecyclerView.ItemDecoration(){
         state: RecyclerView.State
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        val offset = 50
+        val offset = 60
         outRect.bottom = offset
 
     }
