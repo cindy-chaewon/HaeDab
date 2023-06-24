@@ -7,6 +7,8 @@ import com.example.haedab.R
 import com.example.haedab.common.BaseFragment
 import com.example.haedab.databinding.FragmentOnboardingThirdBinding
 import com.example.haedab.presentation.main.MainActivity
+import com.example.haedab.presentation.main.chatting.ChattingActivity
+import com.example.haedab.presentation.main.chatting.ChattingFragment
 
 class OnboardingThirdFragment: BaseFragment<FragmentOnboardingThirdBinding>(FragmentOnboardingThirdBinding::bind, R.layout.fragment_onboarding_third) {
 
@@ -15,7 +17,7 @@ class OnboardingThirdFragment: BaseFragment<FragmentOnboardingThirdBinding>(Frag
 
         binding.nextBtn.setOnClickListener {
             activity?.let {
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, ChattingActivity::class.java)
                 startActivity(intent)
             }
         }
