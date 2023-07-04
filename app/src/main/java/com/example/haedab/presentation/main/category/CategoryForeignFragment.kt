@@ -1,5 +1,6 @@
 package com.example.haedab.presentation.main.category
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,9 +8,15 @@ import com.example.haedab.R
 import com.example.haedab.common.BaseFragment
 import com.example.haedab.databinding.FragmentCategoryCodingBinding
 import com.example.haedab.databinding.FragmentCategoryForeignBinding
+import com.example.haedab.presentation.main.chatting.ChattingActivity
 import com.example.haedab.presentation.main.chatting.ChattingFragment
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 
 class CategoryForeignFragment: BaseFragment<FragmentCategoryForeignBinding>(FragmentCategoryForeignBinding::bind, R.layout.fragment_category_foreign) {
+
+    lateinit var mAdView : AdView
 
     private var categoryList: ArrayList<Category> = arrayListOf(
         Category("사전", R.drawable.ic_foreign_1),
@@ -36,9 +43,20 @@ class CategoryForeignFragment: BaseFragment<FragmentCategoryForeignBinding>(Frag
         }
         categorySecondAdapter.setOnItemClickListener(object : CategorySecondAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                parentFragmentManager.beginTransaction().replace(R.id.main_frame, ChattingFragment()).commit()
+                activity?.let {
+                    val intent = Intent(context, ChattingActivity::class.java)
+                    startActivity(intent)
+                }
             }
         })
+
+        //애드몹 광고
+        //모바일광고 SDK 초기화
+        context?.let { MobileAds.initialize(it){} }
+        //광고 띄우기
+        mAdView = binding.admobBanner
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
     }
 

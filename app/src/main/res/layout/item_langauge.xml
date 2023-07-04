@@ -16,8 +16,9 @@
        android:id="@+id/item_language_img"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_marginStart="2.5dp"
-       android:src="@drawable/language_1"
+       android:src="@drawable/language_2"
+       android:layout_marginStart="2.2dp"
+       android:scaleType="fitStart"
        app:layout_constraintBottom_toBottomOf="@+id/item_language"
        app:layout_constraintStart_toStartOf="@+id/item_language"
        app:layout_constraintTop_toTopOf="@+id/item_language" />

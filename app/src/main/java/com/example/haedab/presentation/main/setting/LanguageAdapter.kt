@@ -5,11 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.haedab.R
 import com.example.haedab.databinding.FragmentLanguageBinding
 import com.example.haedab.databinding.ItemCategoryListBinding
 import com.example.haedab.databinding.ItemLangaugeBinding
 
 class LanguageAdapter(private val dataList : ArrayList<Language>): RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
+
+    var selectPos = -1
 
     inner class ViewHolder(private val binding: ItemLangaugeBinding):
             RecyclerView.ViewHolder(binding.root){
@@ -33,8 +36,20 @@ class LanguageAdapter(private val dataList : ArrayList<Language>): RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(dataList[position])
 
+        if(selectPos == position){
+            holder.itemView.setBackgroundResource(R.drawable.language_background_change)
+        }
+        else{
+            holder.itemView.setBackgroundResource(R.drawable.language_background)
+        }
         holder.itemView.setOnClickListener{
             itemClickListener.onClick(it, position)
+
+            var beforePos = selectPos
+            selectPos = position
+
+            notifyItemChanged(beforePos)
+            notifyItemChanged(selectPos)
         }
     }
 

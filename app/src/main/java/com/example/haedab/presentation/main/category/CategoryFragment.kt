@@ -6,8 +6,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.haedab.R
 import com.example.haedab.common.BaseFragment
 import com.example.haedab.databinding.FragmentCategoryBinding
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 
 class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::bind, R.layout.fragment_category) {
+
+    lateinit var mAdView : AdView
 
     private var categoryList: ArrayList<Category> = arrayListOf(
         Category("코딩", R.drawable.category_1),
@@ -77,6 +82,14 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBi
                 }
             }
         })
+
+        //애드몹 광고
+        //모바일광고 SDK 초기화
+        context?.let { MobileAds.initialize(it){} }
+        //광고 띄우기
+        mAdView = binding.admobBanner
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
     }
 }

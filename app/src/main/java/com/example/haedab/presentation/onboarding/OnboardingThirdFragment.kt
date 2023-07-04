@@ -8,10 +8,13 @@ import com.example.haedab.common.BaseFragment
 import com.example.haedab.databinding.FragmentOnboardingThirdBinding
 import com.example.haedab.presentation.main.MainActivity
 import com.example.haedab.presentation.main.chatting.ChattingActivity
-import com.example.haedab.presentation.main.chatting.ChattingFragment
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 
 class OnboardingThirdFragment: BaseFragment<FragmentOnboardingThirdBinding>(FragmentOnboardingThirdBinding::bind, R.layout.fragment_onboarding_third) {
 
+    lateinit var mAdView: AdView
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -21,6 +24,14 @@ class OnboardingThirdFragment: BaseFragment<FragmentOnboardingThirdBinding>(Frag
                 startActivity(intent)
             }
         }
+
+        //애드몹 광고
+        //모바일광고 SDK 초기화
+        context?.let { MobileAds.initialize(it) {} }
+        //광고 띄우기
+        mAdView = binding.admobBanner
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
     }
 }

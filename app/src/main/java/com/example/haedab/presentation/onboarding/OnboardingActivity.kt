@@ -21,12 +21,5 @@ class OnboardingActivity : BaseActivity<ActivityOnboardingBinding>(ActivityOnboa
 
         supportFragmentManager.beginTransaction().replace(R.id.onboarding_frame, OnboardingFirstFragment()).commit()
 
-        //애드몹 광고
-        //모바일광고 SDK 초기화
-        MobileAds.initialize(this){}
-        //광고 띄우기
-        mAdView = binding.admobBanner
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
     }
 }
