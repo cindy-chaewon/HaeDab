@@ -13,23 +13,26 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryStockFragment: BaseFragment<FragmentCategoryStockBinding>(FragmentCategoryStockBinding::bind, R.layout.fragment_category_stock) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("ETF", R.drawable.ic_stock_1),
-        Category("파이어족되기", R.drawable.ic_stock_2),
-        Category("부동산", R.drawable.ic_stock_3),
-        Category("예금상품", R.drawable.ic_stock_4),
-        Category("시황", R.drawable.ic_stock_5),
-        Category("재태크", R.drawable.ic_stock_6),
-        Category("펀드", R.drawable.ic_stock_7),
-        Category("경제트렌드", R.drawable.ic_stock_8)
-    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.stock1), R.drawable.ic_stock_1),
+            Category(getString(R.string.stock2), R.drawable.ic_stock_2),
+            Category(getString(R.string.stock3), R.drawable.ic_stock_3),
+            Category(getString(R.string.stock4), R.drawable.ic_stock_4),
+            Category(getString(R.string.stock5), R.drawable.ic_stock_5),
+            Category(getString(R.string.stock6), R.drawable.ic_stock_6),
+            Category(getString(R.string.stock7), R.drawable.ic_stock_7),
+            Category(getString(R.string.stock8), R.drawable.ic_stock_8)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

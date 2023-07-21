@@ -1,6 +1,8 @@
 package com.example.haedab.presentation.main.setting
 
 import android.content.Context
+import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
@@ -10,14 +12,21 @@ import com.example.haedab.common.BaseFragment
 import com.example.haedab.databinding.FragmentLanguageBinding
 import com.example.haedab.databinding.FragmentSettingBinding
 import com.example.haedab.presentation.main.chatting.ChattingActivity
+import com.example.haedab.presentation.splash.SplashActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+import kotlin.collections.ArrayList
 
+@AndroidEntryPoint
 class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBinding::bind, R.layout.fragment_language) {
 
     lateinit var mAdView : AdView
     var chattingActivity: ChattingActivity?=null
+
+    private var configuration: Configuration = Configuration()
 
     private var languageList: ArrayList<Language> = arrayListOf(
         Language("한국어", R.drawable.language_1),
@@ -46,6 +55,12 @@ class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBi
         languageAdapter.setOnItemClickListener(object : LanguageAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 binding.applicationBtn.visibility = VISIBLE
+                when(position){
+                    0 -> configuration.locale = Locale.KOREA
+                    1 -> configuration.locale = Locale.US
+
+                }
+
             }
         })
 
@@ -60,6 +75,19 @@ class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBi
         mAdView = binding.admobBanner
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+
+        //언어 선택 적용
+        binding.applicationBtn.setOnClickListener {
+            resources.updateConfiguration(configuration,resources.displayMetrics)
+            val intent = Intent(context, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            /*activity?.let {
+                val intent = Intent(context, SplashActivity::class.java)
+                startActivity(intent)
+            }*/
+        }
 
     }
 

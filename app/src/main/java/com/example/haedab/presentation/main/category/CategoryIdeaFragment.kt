@@ -13,23 +13,27 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryIdeaFragment: BaseFragment<FragmentCategoryIdeaBinding>(FragmentCategoryIdeaBinding::bind, R.layout.fragment_category_idea) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("소설쓰기", R.drawable.ic_idea_1),
-        Category("트위터 콘텐츠", R.drawable.ic_idea_2),
-        Category("페이스북 콘텐츠", R.drawable.ic_idea_3),
-        Category("인스타그램 콘텐츠", R.drawable.ic_idea_4),
-        Category("해답과 함께 놀기", R.drawable.ic_idea_5),
-        Category("레시피", R.drawable.ic_idea_6),
-        Category("여행꿀팁", R.drawable.ic_idea_7),
-        Category("무엇이든 물어보세요!", R.drawable.ic_idea_8)
-    )
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.idea1), R.drawable.ic_idea_1),
+            Category(getString(R.string.idea2_1), R.drawable.ic_idea_2),
+            Category(getString(R.string.idea3), R.drawable.ic_idea_3),
+            Category(getString(R.string.idea4), R.drawable.ic_idea_4),
+            Category(getString(R.string.idea5), R.drawable.ic_idea_5),
+            Category(getString(R.string.idea6), R.drawable.ic_idea_6),
+            Category(getString(R.string.idea7), R.drawable.ic_idea_7),
+            Category(getString(R.string.idea8), R.drawable.ic_idea_8)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

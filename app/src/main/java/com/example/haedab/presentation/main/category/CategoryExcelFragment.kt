@@ -13,24 +13,27 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryExcelFragment: BaseFragment<FragmentCategoryExcelBinding>(FragmentCategoryExcelBinding::bind, R.layout.fragment_category_excel) {
 
     lateinit var mAdView : AdView
 
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("엑셀함수", R.drawable.ic_excel_1),
-        Category("엑셀자격증 준비", R.drawable.ic_excel_2),
-        Category("엑셀기초", R.drawable.ic_excel_3),
-        Category("엑셀표/차트", R.drawable.ic_excel_4),
-        Category("엑셀통계", R.drawable.ic_excel_5),
-        Category("실무엑셀", R.drawable.ic_excel_6),
-        Category("오피스꿀팁", R.drawable.ic_excel_7),
-        Category("PPT", R.drawable.ic_excel_8)
-    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.excel1), R.drawable.ic_excel_1),
+            Category(getString(R.string.excel2), R.drawable.ic_excel_2),
+            Category(getString(R.string.excel3), R.drawable.ic_excel_3),
+            Category(getString(R.string.excel4), R.drawable.ic_excel_4),
+            Category(getString(R.string.excel5), R.drawable.ic_excel_5),
+            Category(getString(R.string.excel6), R.drawable.ic_excel_6),
+            Category(getString(R.string.excel7), R.drawable.ic_excel_7),
+            Category(getString(R.string.excel8), R.drawable.ic_excel_8)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

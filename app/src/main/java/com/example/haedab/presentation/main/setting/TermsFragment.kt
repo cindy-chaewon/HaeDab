@@ -10,7 +10,9 @@ import com.example.haedab.databinding.FragmentTermsBinding
 import com.example.haedab.presentation.main.chatting.ChattingActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TermsFragment: BaseFragment<FragmentTermsBinding>(FragmentTermsBinding::bind, R.layout.fragment_terms) {
 
     var chattingActivity: ChattingActivity?=null

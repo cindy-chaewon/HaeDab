@@ -13,28 +13,30 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryCodingFragment: BaseFragment<FragmentCategoryCodingBinding>(FragmentCategoryCodingBinding::bind, R.layout.fragment_category_coding) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("파이썬", R.drawable.ic_coding_1),
-        Category("자바", R.drawable.ic_coding_2),
-        Category("루비", R.drawable.ic_coding_3),
-        Category("HTML", R.drawable.ic_coding_4),
-        Category("SQL", R.drawable.ic_coding_5),
-        Category("C", R.drawable.ic_coding_6),
-        Category("자바스크립트", R.drawable.ic_coding_7),
-        Category("C++", R.drawable.ic_coding_8),
-        Category("XML", R.drawable.ic_coding_9),
-        Category("JSON", R.drawable.ic_coding_10),
-        Category("BASH", R.drawable.ic_coding_11),
-        Category("기타언어", R.drawable.ic_coding_12)
-    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.coding1), R.drawable.ic_coding_1),
+            Category(getString(R.string.coding2), R.drawable.ic_coding_2),
+            Category(getString(R.string.coding3), R.drawable.ic_coding_3),
+            Category(getString(R.string.coding4), R.drawable.ic_coding_4),
+            Category(getString(R.string.coding5), R.drawable.ic_coding_5),
+            Category(getString(R.string.coding6), R.drawable.ic_coding_6),
+            Category(getString(R.string.coding7), R.drawable.ic_coding_7),
+            Category(getString(R.string.coding8), R.drawable.ic_coding_8),
+            Category(getString(R.string.coding9), R.drawable.ic_coding_9),
+            Category(getString(R.string.coding10), R.drawable.ic_coding_10),
+            Category(getString(R.string.coding11), R.drawable.ic_coding_11),
+            Category(getString(R.string.coding12), R.drawable.ic_coding_12)
+        )
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)
         binding.categoryRv.apply {

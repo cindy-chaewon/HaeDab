@@ -45,7 +45,7 @@ class LanguageAdapter(private val dataList : ArrayList<Language>): RecyclerView.
         holder.itemView.setOnClickListener{
             itemClickListener.onClick(it, position)
 
-            var beforePos = selectPos
+            val beforePos = selectPos
             selectPos = position
 
             notifyItemChanged(beforePos)

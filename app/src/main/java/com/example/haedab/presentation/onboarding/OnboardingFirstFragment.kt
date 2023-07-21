@@ -8,7 +8,9 @@ import com.example.haedab.common.BaseFragment
 import com.example.haedab.databinding.FragmentOnboardingFirstBinding
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingFirstFragment : BaseFragment<FragmentOnboardingFirstBinding>(FragmentOnboardingFirstBinding::bind, R.layout.fragment_onboarding_first) {
 
     lateinit var mAdView : AdView

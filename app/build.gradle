@@ -1,11 +1,16 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
     namespace 'com.example.haedab'
     compileSdk 33
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     defaultConfig {
         applicationId "com.example.haedab"
@@ -15,12 +20,19 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // api key
+        buildConfigField ("String", "GPT_KEY", properties['gpt_key'])
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "DEBUG", "false"
+        }
+        debug {
+            buildConfigField "boolean", "DEBUG", "true"
         }
     }
     compileOptions {
@@ -44,6 +56,7 @@ android {
 
 dependencies {
 
+    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'com.google.android.material:material:1.8.0-beta01'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'com.google.android.material:material:1.8.0-beta01'
@@ -67,8 +80,32 @@ dependencies {
 
     implementation 'com.joooonho:selectableroundedimageview:1.0.1'
 
-    implementation 'com.google.android.gms:play-services-ads:20.2.0'
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // ROOM Database 사용
+    implementation("androidx.room:room-runtime:2.4.3")
+    annotationProcessor("androidx.room:room-compiler:2.4.3")
+    kapt("androidx.room:room-compiler:2.4.3")
+    implementation("androidx.room:room-ktx:2.4.3")
+
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:4.9.1"
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+
+    implementation 'com.google.android.gms:play-services-ads:21.5.0'
+
 
 
 }
 tasks.register("prepareKotlinBuildScriptModel"){}
+
+kapt {
+    correctErrorTypes = true
+}

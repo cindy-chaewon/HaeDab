@@ -13,22 +13,25 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryForeignFragment: BaseFragment<FragmentCategoryForeignBinding>(FragmentCategoryForeignBinding::bind, R.layout.fragment_category_foreign) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("사전", R.drawable.ic_foreign_1),
-        Category("발음", R.drawable.ic_foreign_2),
-        Category("작문", R.drawable.ic_foreign_3),
-        Category("번역", R.drawable.ic_foreign_4),
-        Category("문법", R.drawable.ic_foreign_5),
-        Category("독해", R.drawable.ic_foreign_6)
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.foreign1), R.drawable.ic_foreign_1),
+            Category(getString(R.string.foreign2), R.drawable.ic_foreign_2),
+            Category(getString(R.string.foreign3), R.drawable.ic_foreign_3),
+            Category(getString(R.string.foreign4), R.drawable.ic_foreign_4),
+            Category(getString(R.string.foreign5), R.drawable.ic_foreign_5),
+            Category(getString(R.string.foreign6), R.drawable.ic_foreign_6)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

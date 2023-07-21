@@ -13,19 +13,22 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryEmailFragment: BaseFragment<FragmentCategoryEmailBinding>(FragmentCategoryEmailBinding::bind, R.layout.fragment_category_email) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("맞춤법 검사", R.drawable.ic_email_1),
-        Category("외국어 메일 작성", R.drawable.ic_email_2),
-        Category("업무메일 작성", R.drawable.ic_email_3),
-        Category("홍보메일 작성", R.drawable.ic_email_4)
-    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.email1), R.drawable.ic_email_1),
+            Category(getString(R.string.email2), R.drawable.ic_email_2),
+            Category(getString(R.string.email3), R.drawable.ic_email_3),
+            Category(getString(R.string.email4), R.drawable.ic_email_4)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

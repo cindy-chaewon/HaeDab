@@ -4,6 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import com.example.haedab.R
 import com.example.haedab.common.BaseActivity
 import com.example.haedab.databinding.ActivityChattingBinding
@@ -11,15 +14,20 @@ import com.example.haedab.databinding.ActivityOnboardingBinding
 import com.example.haedab.presentation.main.MainActivity
 import com.example.haedab.presentation.onboarding.OnboardingActivity
 import com.example.haedab.presentation.onboarding.OnboardingFirstFragment
+import com.example.haedab.viewmodel.ChatViewModel
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate) {
     lateinit var mAdView: AdView
 
     private var mInterstitialAd: InterstitialAd? = null
 
+    private val viewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +41,7 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingB
         if (mInterstitialAd != null) {
             mInterstitialAd?.show(this@ChattingActivity)
             mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                fun onAdClicked() {
+                override fun onAdClicked() {
                     Log.d("DEBUG: ", "Ad was clicked.")
                 }
 
@@ -90,4 +98,25 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingB
     fun back(){
         onBackPressed()
     }
+
+    /*override fun onDestroy() {
+        super.onDestroy()
+        viewModel.viewModelScope.launch {
+            viewModel.deleteAll()
+        }
+    }*/
+
+    /*override fun onStop() {
+        super.onStop()
+        viewModel.viewModelScope.launch {
+            viewModel.deleteAll()
+        }
+    }*/
+
+    /*override fun onPause() {
+        super.onPause()
+        viewModel.viewModelScope.launch {
+            viewModel.deleteAll()
+        }
+    }*/
 }

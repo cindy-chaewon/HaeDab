@@ -13,21 +13,24 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategorySelfFragment: BaseFragment<FragmentCategorySelfBinding>(FragmentCategorySelfBinding::bind, R.layout.fragment_category_self) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("취업준비", R.drawable.ic_self_1),
-        Category("자기소개서", R.drawable.ic_self_2),
-        Category("이력서", R.drawable.ic_self_3),
-        Category("1분 자기소개", R.drawable.ic_self_4),
-        Category("먼졉 예상질문", R.drawable.ic_self_5),
-        Category("영어 자기소개서", R.drawable.ic_self_6)
-    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.self1), R.drawable.ic_self_1),
+            Category(getString(R.string.self2), R.drawable.ic_self_2),
+            Category(getString(R.string.self3), R.drawable.ic_self_3),
+            Category(getString(R.string.self4), R.drawable.ic_self_4),
+            Category(getString(R.string.self5), R.drawable.ic_self_5),
+            Category(getString(R.string.self6), R.drawable.ic_self_6)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

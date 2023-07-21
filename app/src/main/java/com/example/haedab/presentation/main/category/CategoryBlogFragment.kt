@@ -13,26 +13,29 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryBlogFragment : BaseFragment<FragmentCategoryBlogBinding>(FragmentCategoryBlogBinding::bind, R.layout.fragment_category_blog){
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("키워드", R.drawable.ic_blog_1),
-        Category("원고작성", R.drawable.ic_blog_2),
-        Category("트렌드", R.drawable.ic_blog_3),
-        Category("콘텐츠종류", R.drawable.ic_blog_4),
-        Category("디지털노마드 되기", R.drawable.ic_blog_5),
-        Category("네이버블로그", R.drawable.ic_blog_6),
-        Category("티스토리블로그", R.drawable.ic_blog_7),
-        Category("블로그체험단", R.drawable.ic_blog_8),
-        Category("블로그수익", R.drawable.ic_blog_9),
-        Category("블로그광고", R.drawable.ic_blog_10)
-    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.blog1), R.drawable.ic_blog_1),
+            Category(getString(R.string.blog2), R.drawable.ic_blog_2),
+            Category(getString(R.string.blog3), R.drawable.ic_blog_3),
+            Category(getString(R.string.blog4), R.drawable.ic_blog_4),
+            Category(getString(R.string.blog5), R.drawable.ic_blog_5),
+            Category(getString(R.string.blog6), R.drawable.ic_blog_6),
+            Category(getString(R.string.blog7), R.drawable.ic_blog_7),
+            Category(getString(R.string.blog8), R.drawable.ic_blog_8),
+            Category(getString(R.string.blog9), R.drawable.ic_blog_9),
+            Category(getString(R.string.blog10), R.drawable.ic_blog_10)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

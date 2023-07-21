@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
-            android:text="외국어공부"
+            android:text="@string/foreign"
             android:textStyle="bold"
             android:textSize="26sp"
             android:textColor="@color/main_purple"

@@ -13,23 +13,26 @@ import com.example.haedab.presentation.main.chatting.ChattingFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryTaskFragment: BaseFragment<FragmentCategoryTaskBinding>(FragmentCategoryTaskBinding::bind, R.layout.fragment_category_task) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
-        Category("에세이", R.drawable.ic_task_1),
-        Category("레포트양식", R.drawable.ic_task_2),
-        Category("보고서", R.drawable.ic_task_3),
-        Category("논문검색", R.drawable.ic_task_4),
-        Category("자료조사", R.drawable.ic_task_5),
-        Category("설문조사", R.drawable.ic_task_6),
-        Category("통계자료", R.drawable.ic_task_7),
-        Category("독후감", R.drawable.ic_task_8)
-    )
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.task1), R.drawable.ic_task_1),
+            Category(getString(R.string.task2), R.drawable.ic_task_2),
+            Category(getString(R.string.task3), R.drawable.ic_task_3),
+            Category(getString(R.string.task4), R.drawable.ic_task_4),
+            Category(getString(R.string.task5), R.drawable.ic_task_5),
+            Category(getString(R.string.task6), R.drawable.ic_task_6),
+            Category(getString(R.string.task7), R.drawable.ic_task_7),
+            Category(getString(R.string.task8), R.drawable.ic_task_8)
+        )
 
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)

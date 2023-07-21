@@ -9,12 +9,14 @@ import com.example.haedab.databinding.FragmentCategoryBinding
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::bind, R.layout.fragment_category) {
 
     lateinit var mAdView : AdView
 
-    private var categoryList: ArrayList<Category> = arrayListOf(
+    /*private var categoryList: ArrayList<Category> = arrayListOf(
         Category("코딩", R.drawable.category_1),
         Category("외국어공부", R.drawable.category_2),
         Category("블로그", R.drawable.category_3),
@@ -26,11 +28,25 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBi
         Category("기타&아이디어", R.drawable.category_9),
         Category("이메일", R.drawable.category_10),
 
-    )
+    )*/
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val categoryList: ArrayList<Category> = arrayListOf(
+            Category(getString(R.string.coding), R.drawable.category_1),
+            Category(getString(R.string.foreign), R.drawable.category_2),
+            Category(getString(R.string.blog), R.drawable.category_3),
+            Category(getString(R.string.self), R.drawable.category_4),
+            Category(getString(R.string.contents), R.drawable.category_5),
+            Category(getString(R.string.excel), R.drawable.category_6),
+            Category(getString(R.string.task), R.drawable.category_7),
+            Category(getString(R.string.stock), R.drawable.category_8),
+            Category(getString(R.string.idea2), R.drawable.category_9),
+            Category(getString(R.string.email), R.drawable.category_10),
+
+            )
 
         //리사이클러뷰
         val categoryFirstAdapter = CategoryFirstAdapter(categoryList)
