@@ -20,6 +20,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
 
 @AndroidEntryPoint
 class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate) {
@@ -79,12 +80,14 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingB
     private fun setupInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
 
+        val randomAdId = getRandomAdId()
+
         InterstitialAd.load(this,
-            "ca-app-pub-4004046235562178/3211382774",
+            randomAdId,
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d("DEBUG: ", adError?.message.toString())
+                    Log.d("DEBUG: ", adError.message.toString())
                     mInterstitialAd = null
                 }
 
@@ -98,6 +101,20 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingB
     fun back(){
         onBackPressed()
     }
+
+    // 랜덤으로 애드몹 광고 id 출력 함수+
+    fun getRandomAdId(): String {
+        val adIds = listOf(
+            "ca-app-pub-4004046235562178/3211382774",
+            "ca-app-pub-4004046235562178/1878119804",
+            "ca-app-pub-4004046235562178/2289221337"
+        )
+
+        val random = Random()
+        val randomIndex = random.nextInt(adIds.size)
+        return adIds[randomIndex]
+    }
+
 
     /*override fun onDestroy() {
         super.onDestroy()
