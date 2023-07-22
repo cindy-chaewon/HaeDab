@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
+import android.view.textclassifier.TextClassifierEvent.LanguageDetectionEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.haedab.R
 import com.example.haedab.common.BaseFragment
@@ -18,6 +19,7 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import java.util.Locale.*
 import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
@@ -58,6 +60,15 @@ class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBi
                 when(position){
                     0 -> configuration.locale = Locale.KOREA
                     1 -> configuration.locale = Locale.US
+                    2 -> {// 인도의 Locale 객체 생성
+                        val indianLocale = Locale("bn", "IN")
+                        // 앱의 기본 Locale 설정 변경
+                        Locale.setDefault(indianLocale)
+                        configuration.setLocale(indianLocale)
+                    }
+                    3 -> configuration.locale = Locale.JAPAN
+                    4 -> configuration.locale = Locale.GERMANY
+                    5 -> configuration.locale = Locale.FRANCE
 
                 }
 

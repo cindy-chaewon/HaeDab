@@ -80,7 +80,7 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingB
         val adRequest = AdRequest.Builder().build()
 
         InterstitialAd.load(this,
-            "ca-app-pub-3940256099942544/1033173712",
+            "ca-app-pub-4004046235562178/3211382774",
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
