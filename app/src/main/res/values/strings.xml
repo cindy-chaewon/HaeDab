@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">haedab</string>
+    <string name="app_name">HaeDab</string>
     <!-- 온보딩 1 -->
     <string name="start">시작하기</string>
     <string name="next">다음</string>
