@@ -31,13 +31,18 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBinding::bind, R.layout.fragment_chatting)  {
 
     lateinit var mAdView : AdView
     var chattingActivity: ChattingActivity?=null
+    private var mInterstitialAd: InterstitialAd? = null
+
+    private var isFirstButtonClick = true
 
     @Inject
     lateinit var chatRVAdapter: ChatRVAdapter
@@ -66,6 +71,15 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
                 messageSending()
             }
 
+        }
+
+        // 채팅 전송 버튼 첫번째로 눌렀을때 애드몹 전면 광고 나오는 거
+        binding.chattingBtn.setOnClickListener {
+            if(isFirstButtonClick){
+                isFirstButtonClick = false
+                setupInterstitialAd()
+
+            }
         }
 
 
@@ -219,6 +233,75 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
         val clipData: ClipData = ClipData.newPlainText("copy", copy)
         //클립보드에 배치
         clipboardManager.setPrimaryClip(clipData)
+    }
+
+
+    private fun setupInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+
+        val randomAdId = getRandomAdId()
+
+        InterstitialAd.load(requireActivity(),
+            randomAdId,
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d("DEBUG: ", adError.message.toString())
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    Log.d("DEBUG: ", "Ad was loaded.")
+                    mInterstitialAd = interstitialAd
+                }
+            })
+    }
+
+    // 랜덤으로 애드몹 광고 id 출력 함수+
+    private fun getRandomAdId(): String {
+        val adIds = listOf(
+            "ca-app-pub-4004046235562178/3211382774",
+            "ca-app-pub-4004046235562178/1878119804",
+            "ca-app-pub-4004046235562178/2289221337"
+        )
+
+        val random = Random()
+        val randomIndex = random.nextInt(adIds.size)
+        return adIds[randomIndex]
+    }
+
+
+    fun admob(){
+        if (mInterstitialAd != null) {
+            mInterstitialAd?.show(requireActivity())
+            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdClicked() {
+                    Log.d("DEBUG: ", "Ad was clicked.")
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    // Called when ad is dismissed.
+                    Log.d("DEBUG: ", "Ad dismissed fullscreen content.")
+                    mInterstitialAd = null
+                    setupInterstitialAd()
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    Log.e("DEBUG: ", "Ad failed to show fullscreen content.")
+                    mInterstitialAd = null
+                }
+
+                override fun onAdImpression() {
+                    Log.d("DEBUG: ", "Ad recorded an impression.")
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    Log.d("DEBUG: ", "Ad showed fullscreen content.")
+                }
+            }
+        } else {
+
+        }
     }
 
 

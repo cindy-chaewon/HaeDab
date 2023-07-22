@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UseFirstFragment: BaseFragment<FragmentUseFirstBinding>(FragmentUseFirstBinding::bind, R.layout.fragment_use_first) {
 
+
     lateinit var mAdView : AdView
     var chattingActivity: ChattingActivity?=null
 
