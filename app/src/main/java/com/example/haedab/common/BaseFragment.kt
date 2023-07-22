@@ -20,17 +20,23 @@ abstract class BaseFragment<B : ViewBinding>(
 ) : Fragment(layoutResId) {
     private var _binding: B? = null
     protected val binding get() = _binding!!
+
+    private val networkCheck: NetworkConnection by lazy {
+        NetworkConnection(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = bind(super.onCreateView(inflater, container, savedInstanceState)!!)
+        networkCheck.register() // 네트워크 객체 등록
         return binding.root
     }
 
     override fun onDestroyView() {
         _binding = null
+        networkCheck.unregister() // 네트워크 객체 해제
         super.onDestroyView()
     }
 
