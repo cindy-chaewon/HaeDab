@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.haedab.R
 import com.example.haedab.database.RoomEntity
 import com.example.haedab.utils.Constants
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 
 class ChatRVAdapter @Inject constructor():RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -63,10 +65,14 @@ class ChatRVAdapter @Inject constructor():RecyclerView.Adapter<RecyclerView.View
 
         when (holder.itemViewType) {
             VIEW_TYPE_USER -> {(holder as UserMessageViewHolder).userMessageTV.text = messageList[position].message
-                val current = LocalDateTime.now()
+                /*val current = LocalDateTime.now()
                 val formatter = DateTimeFormatter.ofPattern("h:mm a")
-                val formatted = current.format(formatter)
+                val formatted = current.format(formatter)*/
+                val currentTime = Calendar.getInstance().time
+                val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                val formatted = format.format(currentTime)
                 (holder as UserMessageViewHolder).time.text = formatted
+
 
             }
             VIEW_TYPE_BOT -> {

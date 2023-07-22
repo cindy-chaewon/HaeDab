@@ -1,5 +1,6 @@
 package com.example.haedab.presentation.main.chatting
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -42,8 +43,9 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
     lateinit var mAdView : AdView
     var chattingActivity: ChattingActivity?=null
     private var mInterstitialAd: InterstitialAd? = null
+    private val PREFS_NAME = "MyPrefsFile"
 
-    private var isFirstButtonClick = true
+    //private var isFirstButtonClick : Boolean = false
 
     @Inject
     lateinit var chatRVAdapter: ChatRVAdapter
@@ -56,15 +58,10 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         // 로딩 다이얼로그
         val dialog = LoadingDialog(requireContext())
-
-        //채팅 복사 기능
-        chatRVAdapter.setOnItemClickListener(object :ChatRVAdapter.OnItemClickListener{
-            override fun onLongClick(v: View, position: Int, text: String) {
-                createClipData(text)
-            }
-        })
+        //isFirstButtonClick = true
 
         binding.apply {
             fillMessageList()
@@ -73,9 +70,10 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
 
             chattingBtn.setOnClickListener {
                 // 채팅 전송 버튼 첫번째로 눌렀을때 애드몹 전면 광고 나오는 거
-                if(isFirstButtonClick){
-                    isFirstButtonClick = false
+                if(sharedPreferences.getBoolean("first", false)){
+                    //isFirstButtonClick = false
                     setupInterstitialAd()
+                    admob()
                     messageSending()
 
                 }
@@ -178,6 +176,12 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
             recyclerMessages.scrollToPosition(messageList.size - 1)
             scrollToBottom()
         }
+        //채팅 복사 기능
+        chatRVAdapter.setOnItemClickListener(object :ChatRVAdapter.OnItemClickListener{
+            override fun onLongClick(v: View, position: Int, text: String) {
+                createClipData(text)
+            }
+        })
     }
 
     private fun getAllData() {
@@ -241,10 +245,10 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
 
     private fun setupInterstitialAd() {
         val adRequest = AdRequest.Builder().build()
-
         val randomAdId = getRandomAdId()
+        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-        InterstitialAd.load(requireActivity(),
+        InterstitialAd.load(requireContext(),
             randomAdId,
             adRequest,
             object : InterstitialAdLoadCallback() {
@@ -256,6 +260,12 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     Log.d("DEBUG: ", "Ad was loaded.")
                     mInterstitialAd = interstitialAd
+                    if(sharedPreferences.getBoolean("first", false)){
+                        //isFirstButtonClick = false
+                        admob()
+                        sharedPreferences.edit().putBoolean("first", false).apply()
+
+                    }
                 }
             })
     }
@@ -307,6 +317,15 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
         }
     }
 
+    /*override fun onDestroy() {
+        isFirstButtonClick = false
+        super.onDestroy()
+    }
+
+    override fun onStop() {
+        isFirstButtonClick = false
+        super.onStop()
+    }*/
 
 
 }
