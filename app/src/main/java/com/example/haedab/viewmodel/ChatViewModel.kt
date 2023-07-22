@@ -1,10 +1,13 @@
 package com.example.haedab.viewmodel
 
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.haedab.common.LoadingDialog
 import com.example.haedab.database.RoomEntity
 import com.example.haedab.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +20,8 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
     private val _messageList = MutableStateFlow<List<RoomEntity>>(emptyList())
 
     val allMessageList: Flow<List<RoomEntity>> = repository.allMessages
-
     suspend fun getResponse(query: String) {
+        loadingStart()
         addMessage(RoomEntity(0,query, "user"))
         //emitTyping()
 
@@ -40,6 +43,17 @@ class ChatViewModel @Inject constructor(private val repository: ChatRepository) 
             //delay(1000)
             addMessage(RoomEntity(0, "", "bot"))
         }
+    }
+
+    private fun loadingStart(){
+        viewModelScope.launch {
+
+
+        }
+    }
+
+    private fun loadingEnd(){
+
     }
 
     /*suspend fun botWelcomeMessage() {

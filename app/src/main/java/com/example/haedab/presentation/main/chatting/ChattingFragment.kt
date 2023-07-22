@@ -18,6 +18,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.haedab.R
 import com.example.haedab.common.BaseFragment
+import com.example.haedab.common.LoadingDialog
 import com.example.haedab.database.RoomEntity
 import com.example.haedab.databinding.FragmentChattingBinding
 import com.example.haedab.databinding.FragmentOnboardingFirstBinding
@@ -55,6 +56,9 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 로딩 다이얼로그
+        val dialog = LoadingDialog(requireContext())
+
         //채팅 복사 기능
         chatRVAdapter.setOnItemClickListener(object :ChatRVAdapter.OnItemClickListener{
             override fun onLongClick(v: View, position: Int, text: String) {
@@ -68,20 +72,19 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
             createRecyclerView()
 
             chattingBtn.setOnClickListener {
-                messageSending()
+                // 채팅 전송 버튼 첫번째로 눌렀을때 애드몹 전면 광고 나오는 거
+                if(isFirstButtonClick){
+                    isFirstButtonClick = false
+                    setupInterstitialAd()
+                    messageSending()
+
+                }
+                else{
+                    messageSending()
+                }
             }
 
         }
-
-        // 채팅 전송 버튼 첫번째로 눌렀을때 애드몹 전면 광고 나오는 거
-        binding.chattingBtn.setOnClickListener {
-            if(isFirstButtonClick){
-                isFirstButtonClick = false
-                setupInterstitialAd()
-
-            }
-        }
-
 
         //뒤로가기 버튼 눌렀을때
         binding.backBtn.setOnClickListener {
