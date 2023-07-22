@@ -12,6 +12,9 @@ android {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def admob = properties.getProperty('admob')
+
     defaultConfig {
         applicationId "com.example.haedab"
         minSdk 24
@@ -23,6 +26,9 @@ android {
 
         // api key
         buildConfigField ("String", "GPT_KEY", properties['gpt_key'])
+        buildConfigField "String", "ADMOB", properties['admob_2']
+        // mainfest에서 쓸 수 있도록 지정
+        manifestPlaceholders = [ADMOB : admob]
     }
 
     buildTypes {
