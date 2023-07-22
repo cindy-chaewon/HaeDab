@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.haedab'
+    namespace 'haedab.haedab.haedab'
     compileSdk 33
 
     Properties properties = new Properties()
@@ -16,7 +16,7 @@ android {
     def admob = properties.getProperty('admob')
 
     defaultConfig {
-        applicationId "com.example.haedab"
+        applicationId "haedab.haedab.haedab"
         minSdk 24
         targetSdk 33
         versionCode 1
