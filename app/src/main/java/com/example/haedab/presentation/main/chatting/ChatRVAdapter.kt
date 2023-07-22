@@ -55,6 +55,11 @@ class ChatRVAdapter @Inject constructor():RecyclerView.Adapter<RecyclerView.View
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        val text = messageList[position].message
+
+        holder.itemView.setOnClickListener{
+            itemClickListener.onLongClick(it, position, text)
+        }
 
         when (holder.itemViewType) {
             VIEW_TYPE_USER -> {(holder as UserMessageViewHolder).userMessageTV.text = messageList[position].message
@@ -90,4 +95,15 @@ class ChatRVAdapter @Inject constructor():RecyclerView.Adapter<RecyclerView.View
         private const val VIEW_TYPE_USER = 0
         private const val VIEW_TYPE_BOT = 1
     }
+
+
+    interface OnItemClickListener {
+        fun onLongClick(v: View, position: Int, text: String)
+    }
+
+    fun setOnItemClickListener(onItemClickListener: OnItemClickListener){
+        this.itemClickListener = onItemClickListener
+    }
+
+    private lateinit var itemClickListener : OnItemClickListener
 }

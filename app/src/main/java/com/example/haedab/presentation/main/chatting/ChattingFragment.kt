@@ -1,6 +1,9 @@
 package com.example.haedab.presentation.main.chatting
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -47,9 +50,14 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //채팅 복사 기능
+        chatRVAdapter.setOnItemClickListener(object :ChatRVAdapter.OnItemClickListener{
+            override fun onLongClick(v: View, position: Int, text: String) {
+                createClipData(text)
+            }
+        })
+
         binding.apply {
-
-
             fillMessageList()
 
             createRecyclerView()
@@ -109,7 +117,6 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
                 handled
             }
         }
-
 
     }
 
@@ -204,6 +211,16 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
         super.onAttach(context)
         chattingActivity = context as ChattingActivity
     }
+
+    // 계좌 복사
+    private fun createClipData(copy : String){
+        val clipboardManager: ClipboardManager =
+            requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData: ClipData = ClipData.newPlainText("copy", copy)
+        //클립보드에 배치
+        clipboardManager.setPrimaryClip(clipData)
+    }
+
 
 
 }
