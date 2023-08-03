@@ -3,6 +3,7 @@ package haedab.haedab.haedab.presentation.main.setting
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -23,12 +24,19 @@ class SettingFragment: BaseFragment<FragmentSettingBinding>(FragmentSettingBindi
         super.onViewCreated(view, savedInstanceState)
 
 
+        //뒤로가기
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                parentFragmentManager.beginTransaction().replace(R.id.chatting_frame, ChattingFragment()).commit()
+            }
+        })
+
         binding.setting1.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.chatting_frame, LanguageFragment()).addToBackStack(null).commit()
         }
 
         binding.setting2.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.chatting_frame, UseFirstFragment()).addToBackStack(SETTING.toString()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.chatting_frame, UseFirstFragment()).addToBackStack(null).commit()
         }
 
         binding.setting3.setOnClickListener {

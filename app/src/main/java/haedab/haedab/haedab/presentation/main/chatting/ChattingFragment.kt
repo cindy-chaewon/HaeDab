@@ -1,17 +1,25 @@
 package haedab.haedab.haedab.presentation.main.chatting
 
+import android.app.ProgressDialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -31,6 +39,9 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import haedab.haedab.haedab.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBinding::bind, R.layout.fragment_chatting)  {
@@ -39,8 +50,10 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
     var chattingActivity: ChattingActivity?=null
     private var mInterstitialAd: InterstitialAd? = null
     private val PREFS_NAME = "MyPrefsFile"
-
+    private var backPressedOnce = false
+    private var softKeyboardVisible = false
     //private var isFirstButtonClick : Boolean = false
+    private var loadingDialog: ProgressDialog? = null
 
     @Inject
     lateinit var chatRVAdapter: ChatRVAdapter
@@ -53,10 +66,33 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        //뒤로가기
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                chattingActivity!!.admob()
+                chattingActivity!!.onBack()
+                //activity?.finish()
+                /*if (!backPressedOnce) {
+                    backPressedOnce = true
+                    showToast()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        backPressedOnce = false
+                    }, 3000)
+                } else {
+                    activity?.finish()
+                }*/
+            }
+        })
+
+
+        val sharedPreferences =requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         // 로딩 다이얼로그
         val dialog = LoadingDialog(requireContext())
         //isFirstButtonClick = true
+
+        //키보드올라왔을때 뒤로가기 버튼
+        //setupBackButtonHandling()
+
 
         binding.apply {
             fillMessageList()
@@ -65,7 +101,7 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
 
             chattingBtn.setOnClickListener {
                 // 채팅 전송 버튼 첫번째로 눌렀을때 애드몹 전면 광고 나오는 거
-                if(sharedPreferences.getBoolean("first", false)){
+                /*if(sharedPreferences.getBoolean("first", false)){
                     //isFirstButtonClick = false
                     setupInterstitialAd()
                     admob()
@@ -74,7 +110,11 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
                 }
                 else{
                     messageSending()
-                }
+                }*/
+                //키보드 내리기
+                val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                messageSending()
             }
 
         }
@@ -82,6 +122,9 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
         //뒤로가기 버튼 눌렀을때
         binding.backBtn.setOnClickListener {
             chattingActivity!!.admob()
+            //chattingActivity!!.onBack()
+            //activity?.finish()
+
         }
 
         binding.settingBtn.setOnClickListener{
@@ -120,9 +163,9 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
                 var handled = false
                 if (action == EditorInfo.IME_ACTION_DONE) {
                     // 키보드 내리기
-                    //val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    //imm.hideSoftInputFromWindow(chattingEt.windowToken, 0)
-                    //handled = true
+                    val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(chattingEt.windowToken, 0)
+                    handled = true
                 }
                 handled
             }
@@ -130,16 +173,56 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
 
     }
 
+    /*private fun setupBackButtonHandling() {
+        binding.chattingEt.setOnFocusChangeListener { _, hasFocus ->
+            softKeyboardVisible = hasFocus
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (softKeyboardVisible) {
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(binding.chattingEt.windowToken, 0)
+                } else {
+                    if (!backPressedOnce) {
+                        backPressedOnce = true
+                        showToast()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            backPressedOnce = false
+                        }, 3000)
+                    } else {
+                        requireActivity().finish()
+                    }
+                }
+            }
+        })
+    }*/
+
+
     private fun messageSending() {
         binding.apply {
             val message = chattingEt.text.toString().trim()
             lastMessage = message
             if (message.isNotEmpty()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.getResponse(message)
-                }
-                chattingEt.text?.clear()
-                scrollToBottom()
+                val dialog = LoadingDialog(requireContext())
+                dialog.window?.setDimAmount(0F)
+                dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
+                        Log.d("loading", "showLoadingDialog: show dialog")
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            viewModel.getResponse(message)
+                        }
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            viewModel.isLoading.collect { loading ->
+                                if (loading) {
+                                    Log.d("loading", "showLoadingDialog: dismissing dialog")
+                                    dialog.dismiss()
+                                }
+                            }
+                        }
+                        chattingEt.text?.clear()
+                        scrollToBottom()
+
                 //recyclerMessages.smoothScrollToPosition(messageList.size - 1)
             } else {
                 Toast.makeText(
@@ -311,6 +394,26 @@ class ChattingFragment: BaseFragment<FragmentChattingBinding>(FragmentChattingBi
 
         }
     }
+
+    private fun showToast() {
+        Toast.makeText(requireContext(), "한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    /*private fun showLoadingDialog() {
+        Log.d("loading", "showLoadingDialog: showing dialog")
+        val dialog = LoadingDialog(requireContext())
+        dialog.show()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoading.collect { loading ->
+                Log.d("loading", "isLoading: $loading")
+                if (!loading) {
+                    Log.d("loading", "showLoadingDialog: dismissing dialog")
+                    dialog.dismiss()
+                }
+            }
+        }
+    }*/
+
 
     /*override fun onDestroy() {
         isFirstButtonClick = false

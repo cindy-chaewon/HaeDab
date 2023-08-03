@@ -2,6 +2,7 @@ package haedab.haedab.haedab.presentation.main.setting
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import haedab.haedab.haedab.R
 import haedab.haedab.haedab.common.BaseFragment
+import haedab.haedab.haedab.common.MyApplication
 import haedab.haedab.haedab.databinding.FragmentLanguageBinding
 import haedab.haedab.haedab.presentation.main.chatting.ChattingActivity
 import haedab.haedab.haedab.presentation.splash.SplashActivity
@@ -23,6 +25,7 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBinding::bind, R.layout.fragment_language) {
 
+    private val PREFS_NAME = "MyPrefsFile"
     lateinit var mAdView : AdView
     var chattingActivity: ChattingActivity?=null
 
@@ -36,6 +39,7 @@ class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBi
         Language("Deutsch", R.drawable.language_5),
         Language("Français", R.drawable.language_6),
     )
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,21 +56,54 @@ class LanguageFragment: BaseFragment<FragmentLanguageBinding>(FragmentLanguageBi
             addItemDecoration(LanguageVerticalItemDecoration())
         }
 
+
         languageAdapter.setOnItemClickListener(object : LanguageAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
                 binding.applicationBtn.visibility = VISIBLE
                 when(position){
-                    0 -> configuration.locale = Locale.KOREA
-                    1 -> configuration.locale = Locale.US
+                    0 -> {configuration.locale = Locale.KOREA
+                        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("lan", "ko")
+                        editor.apply()
+                    }
+                    1 -> {configuration.locale = Locale.US
+                        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("lan", "en")
+                        editor.apply()
+                    }
                     2 -> {// 인도의 Locale 객체 생성
                         val indianLocale = Locale("bn", "IN")
                         // 앱의 기본 Locale 설정 변경
                         Locale.setDefault(indianLocale)
                         configuration.setLocale(indianLocale)
+                        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("lan", "hi")
+                        editor.apply()
                     }
-                    3 -> configuration.locale = Locale.JAPAN
-                    4 -> configuration.locale = Locale.GERMANY
-                    5 -> configuration.locale = Locale.FRANCE
+                    3 -> {configuration.locale = Locale.JAPAN
+                        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("lan", "ja")
+                        editor.apply()
+                    }
+                    4 -> {
+                        val gerLocale = Locale("en", "DE")
+                        Locale.setDefault(gerLocale)
+                        configuration.setLocale(gerLocale)
+                        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("lan", "de")
+                        editor.apply()
+                    }
+                    5 -> {configuration.locale = Locale.FRANCE
+                        val sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("lan", "de")
+                        editor.apply()
+                    }
 
                 }
 

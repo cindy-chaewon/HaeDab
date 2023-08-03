@@ -1,6 +1,9 @@
 package haedab.haedab.haedab.presentation.main.chatting
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -18,7 +21,7 @@ import haedab.haedab.haedab.R
 @AndroidEntryPoint
 class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingBinding::inflate) {
     lateinit var mAdView: AdView
-
+    private val PREFS_NAME = "MyPrefsFile"
     private var mInterstitialAd: InterstitialAd? = null
 
     private val viewModel: ChatViewModel by viewModels()
@@ -129,4 +132,19 @@ class ChattingActivity : BaseActivity<ActivityChattingBinding>(ActivityChattingB
             viewModel.deleteAll()
         }
     }*/
+
+    override fun onDestroy() {
+        val sharedPreferences: SharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+        super.onDestroy()
+    }
+
+    fun onBack(){
+            val returnIntent = Intent()
+            setResult(Activity.RESULT_OK, returnIntent)
+            finish()
+
+    }
 }

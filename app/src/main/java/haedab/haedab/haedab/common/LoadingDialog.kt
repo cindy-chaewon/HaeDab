@@ -11,6 +11,7 @@ class LoadingDialog(context: Context) : Dialog(context){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_loading)
 
+
         // 취소 불가능
         setCancelable(false)
 
