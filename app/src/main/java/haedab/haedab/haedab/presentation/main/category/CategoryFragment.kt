@@ -1,7 +1,15 @@
 package haedab.haedab.haedab.presentation.main.category
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.recyclerview.widget.GridLayoutManager
 
 import com.google.android.gms.ads.AdRequest
@@ -11,11 +19,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import haedab.haedab.haedab.R
 import haedab.haedab.haedab.common.BaseFragment
 import haedab.haedab.haedab.databinding.FragmentCategoryBinding
+import haedab.haedab.haedab.presentation.main.MainActivity
+import haedab.haedab.haedab.presentation.main.chatting.ChattingActivity
 
 @AndroidEntryPoint
 class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBinding::bind, R.layout.fragment_category) {
 
     lateinit var mAdView : AdView
+
+    private var backPressedOnce = false
+    private var backOnce = false
+    var mainActivity : MainActivity ?= null
 
     /*private var categoryList: ArrayList<Category> = arrayListOf(
         Category("코딩", R.drawable.category_1),
@@ -34,6 +48,40 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //뒤로가기
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+                if (!backPressedOnce) {
+                    backPressedOnce = true
+                    showToast()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        backPressedOnce = false
+                    }, 3000)
+                } else {
+                    //mainActivity!!.finishChattingActivity()
+                    activity?.finish()
+                    activity?.let { ActivityCompat.finishAffinity(it) }
+                    //mainActivity!!.startChattingActivity()
+
+                }
+            }
+        })
+
+        binding.backBtn.setOnClickListener {
+            if (!backOnce) {
+                backOnce = true
+                showToast()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    backOnce = false
+                }, 3000)
+            } else {
+                //mainActivity!!.startChattingActivity()
+                activity?.finish()
+                activity?.let { ActivityCompat.finishAffinity(it) }
+            }
+        }
 
         val categoryList: ArrayList<Category> = arrayListOf(
             Category(getString(R.string.coding), R.drawable.category_1),
@@ -108,5 +156,14 @@ class CategoryFragment: BaseFragment<FragmentCategoryBinding>(FragmentCategoryBi
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
+    }
+
+    private fun showToast() {
+        Toast.makeText(requireContext(), "한번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
     }
 }

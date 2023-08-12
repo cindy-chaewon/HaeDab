@@ -3,6 +3,7 @@ package haedab.haedab.haedab.presentation.main.category
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.google.android.gms.ads.AdRequest
@@ -33,6 +34,13 @@ class CategoryStockFragment: BaseFragment<FragmentCategoryStockBinding>(Fragment
             Category(getString(R.string.stock8), R.drawable.ic_stock_8)
         )
 
+        //뒤로가기
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                parentFragmentManager.beginTransaction().replace(R.id.main_frame, CategoryFragment()).commit()
+            }
+        })
+
         //리사이클러뷰
         val categorySecondAdapter = CategorySecondAdapter(categoryList)
         binding.categoryRv.apply {
@@ -50,6 +58,7 @@ class CategoryStockFragment: BaseFragment<FragmentCategoryStockBinding>(Fragment
                     val intent = Intent(context, ChattingActivity::class.java)
                     startActivity(intent)
                 }
+                activity?.finish()
             }
         })
 

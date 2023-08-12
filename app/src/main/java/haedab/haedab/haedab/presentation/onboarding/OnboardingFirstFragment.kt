@@ -17,7 +17,7 @@ class OnboardingFirstFragment : BaseFragment<FragmentOnboardingFirstBinding>(Fra
         super.onViewCreated(view, savedInstanceState)
 
         binding.startBtn.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.onboarding_frame, OnboardingSecondFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.onboarding_frame, OnboardingSecondFragment()).addToBackStack(null).commit()
         }
 
         //애드몹 광고
